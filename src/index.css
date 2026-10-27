@@ -166,6 +166,10 @@
 .dark .hover\:bg-neutral-100:hover { background-color: #262C36 !important; }
 .dark .hover\:bg-neutral-50:hover { background-color: #1F242D !important; }
 
+/* Segment kontrol tepsisi gece modunda */
+.dark .bg-neutral-100 { background-color: #1B1F27 !important; }
+.dark .bg-neutral-100 .bg-white { background-color: #262B35 !important; }
+
 /* Soft tinted backgrounds */
 .dark .bg-blue-50 { background-color: rgba(59, 130, 246, 0.16) !important; }
 .dark .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.16) !important; }

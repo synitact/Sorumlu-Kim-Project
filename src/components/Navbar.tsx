@@ -77,6 +77,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     onSelectTab(tab);
   };
 
+  // Tek kaynak: sekmeler. Segment kontrolü bunu map'ler (tutarlı + DRY).
+  const TABS: { id: ViewTab; label: string; Icon: typeof Map; accent?: string }[] = [
+    { id: 'harita', label: 'Harita', Icon: Map },
+    { id: 'kamu_calismalari', label: 'Çalışmalar', Icon: Wrench, accent: 'text-[#C2410C]' },
+    { id: 'sikayetler', label: 'Şikayetler', Icon: MessageSquare },
+    { id: 'isi_haritasi', label: 'Isı Haritası', Icon: Flame, accent: 'text-[#C2410C]' },
+    { id: 'dilekce', label: 'Dilekçe', Icon: FileText, accent: 'text-[#047857]' },
+    { id: 'istatistikler', label: 'İstatistikler', Icon: BarChart3 },
+  ];
+
   // Custom city dropdown state
   const [isCityOpen, setIsCityOpen] = useState(false);
   const [citySearch, setCitySearch] = useState('');
@@ -329,84 +339,31 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Secondary Row: Tabs & Authority Filter Filters */}
       <div className="w-full px-4 sm:px-6 py-1.5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 border-t border-neutral-200 bg-[#FAFAFA]">
-        {/* Navigation Tabs */}
-        <nav className="flex flex-wrap items-center gap-1.5">
-          <button
-            onClick={() => selectTab('harita')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold whitespace-nowrap transition ${
-              currentTab === 'harita'
-                ? 'bg-[#121212] text-white shadow-xs'
-                : 'text-neutral-600 hover:text-black hover:bg-neutral-200'
-            }`}
-          >
-            <Map className="w-3.5 h-3.5" />
-            <span>Harita</span>
-          </button>
-
-          <button
-            onClick={() => selectTab('kamu_calismalari')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold whitespace-nowrap transition ${
-              currentTab === 'kamu_calismalari'
-                ? 'bg-[#121212] text-white shadow-xs'
-                : 'text-neutral-600 hover:text-black hover:bg-neutral-200'
-            }`}
-          >
-            <Wrench className="w-3.5 h-3.5 text-[#C2410C]" />
-            <span>Çalışmalar</span>
-            {utilityWorksCount > 0 && (
-              <span className="bg-red-600 text-white text-[10px] font-mono px-1 py-0.2 rounded-xs font-bold animate-pulse">
-                {utilityWorksCount}
-              </span>
-            )}
-          </button>
-
-          <button
-            onClick={() => selectTab('sikayetler')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold whitespace-nowrap transition ${
-              currentTab === 'sikayetler'
-                ? 'bg-[#121212] text-white shadow-xs'
-                : 'text-neutral-600 hover:text-black hover:bg-neutral-200'
-            }`}
-          >
-            <MessageSquare className="w-3.5 h-3.5" />
-            <span>Şikayetler</span>
-          </button>
-
-          <button
-            onClick={() => selectTab('isi_haritasi')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold whitespace-nowrap transition ${
-              currentTab === 'isi_haritasi'
-                ? 'bg-[#121212] text-white shadow-xs'
-                : 'text-neutral-600 hover:text-black hover:bg-neutral-200'
-            }`}
-          >
-            <Flame className="w-3.5 h-3.5 text-[#C2410C]" />
-            <span>Isı Haritası</span>
-          </button>
-
-          <button
-            onClick={() => selectTab('dilekce')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold whitespace-nowrap transition ${
-              currentTab === 'dilekce'
-                ? 'bg-[#121212] text-white shadow-xs'
-                : 'text-neutral-600 hover:text-black hover:bg-neutral-200'
-            }`}
-          >
-            <FileText className="w-3.5 h-3.5 text-[#047857]" />
-            <span>Dilekçe</span>
-          </button>
-
-          <button
-            onClick={() => selectTab('istatistikler')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold whitespace-nowrap transition ${
-              currentTab === 'istatistikler'
-                ? 'bg-[#121212] text-white shadow-xs'
-                : 'text-neutral-600 hover:text-black hover:bg-neutral-200'
-            }`}
-          >
-            <BarChart3 className="w-3.5 h-3.5" />
-            <span>İstatistikler</span>
-          </button>
+        {/* Navigation Tabs — sakin segment kontrolü (gri tepsi, beyaz aktif pastil) */}
+        <nav className="inline-flex items-center gap-0.5 p-1 bg-neutral-100 rounded-full overflow-x-auto max-w-full">
+          {TABS.map(({ id, label, Icon, accent }) => {
+            const active = currentTab === id;
+            return (
+              <button
+                key={id}
+                onClick={() => selectTab(id)}
+                aria-current={active ? 'page' : undefined}
+                className={`relative flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap rounded-full transition ${
+                  active
+                    ? 'bg-white text-[#121212] shadow-xs'
+                    : 'text-neutral-500 hover:text-[#121212]'
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 ${active ? (accent || 'text-[#1D4ED8]') : accent || ''}`} />
+                <span>{label}</span>
+                {id === 'kamu_calismalari' && utilityWorksCount > 0 && (
+                  <span className="ml-0.5 min-w-[16px] h-4 inline-flex items-center justify-center bg-[#C2410C] text-white text-[10px] px-1 rounded-full font-bold">
+                    {utilityWorksCount}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </nav>
 
         {/* City and Authority Quick Filters */}

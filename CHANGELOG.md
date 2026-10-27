@@ -4,6 +4,10 @@ Sorumlu Kim? projesinde **gün gün** ne yaptığımızın kaydı. En yeni en ü
 
 ---
 
+## 27.10.2026
+
+- 🎛️ **Sekmeler sakin segment kontrolüne çevrildi**: üstteki 6 sekme artık tek bir gri tepsi içinde beyaz "aktif pastil" ile gösteriliyor (modern app hissi, tutarlı yuvarlak köşe); gece modu uyumlu, çalışma sayısı rozeti korundu
+
 ## 08.10.2026
 
 - 🛰️ **"Map data yok" hatası düzeltildi**: çok yakınlaşınca harita zemini (ArcGIS) kayboluyordu; artık en yakın kare büyütülerek gösteriliyor, boş gri tile gelmiyor
